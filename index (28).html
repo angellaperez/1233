@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transacciones Seguras - Teresa Guzman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; padding:20px; font-family:'Montserrat', sans-serif; background:#f2f4f7; color:#333; }
+    .wrapper { max-width:600px; margin:0 auto; }
+    h1 { text-align:center; font-weight:600; margin-bottom:20px; }
+    .live-feed { background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.05); margin-bottom:30px; overflow:hidden; }
+    .live-feed__header { padding:16px; background:#006d77; color:#fff; font-weight:600; }
+    .live-feed__list { list-style:none; margin:0; padding:0; }
+    .live-feed__item { display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; animation:slideDown .5s ease; }
+    .live-feed__item:last-child { border-bottom:none; }
+    @keyframes slideDown { from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);} }
+    .trust-section { text-align:center; padding-bottom:20px; }
+    .trust-section h2 { margin-bottom:16px; font-size:1.2rem; }
+    .trust-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .trust-card { background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+    .trust-card .icon { font-size:2rem; margin-bottom:8px; }
+    .trust-card p { margin:4px 0; }
+    .trust-desc { font-size:0.9rem; color:#555; }
+    @media (max-width: 480px) {
+      .live-feed__item { flex-direction:column; align-items:flex-start; }
+      .live-feed__item span { margin-top:4px; }
+      .trust-cards { grid-template-columns:1fr; }
+      .trust-card { text-align:left; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Últimos pagos a las cuentas de los clientes por parte de Teresa Guzman</h1>
+    <div class="live-feed">
+      <div class="live-feed__header">Últimas Transacciones</div>
+      <ul class="live-feed__list" id="liveList"></ul>
+    </div>
+    <div class="trust-section">
+      <h2>Por qué confiar en nosotros</h2>
+      <div class="trust-cards">
+        <div class="trust-card">
+          <div class="icon">🔒</div>
+          <p><strong>Cifrado SSL 256-bit</strong></p>
+          <p class="trust-desc">Teresa garantiza que toda la información se transmita de manera segura y cifrada, protegiendo datos personales y transacciones.</p>
+        </div>
+        <div class="trust-card">
+          <div class="icon">🕒</div>
+          <p><strong>Atención en horario laboral</strong></p>
+          <p class="trust-desc">Teresa brinda atención durante toda la jornada laboral, los 7 días de la semana.</p>
+        </div>
+        <div class="trust-card">
+          <div class="icon">✔️</div>
+          <p><strong>Retiro garantizado</strong></p>
+          <p class="trust-desc">Teresa garantiza que los retiros se procesen rápidamente sin comisiones ocultas.</p>
+        </div>
+        <div class="trust-card">
+          <div class="icon">⭐</div>
+          <p><strong>Valorados 4.8/5 por clientes</strong></p>
+          <p class="trust-desc">Teresa cuenta con una calificación de 4.8/5 basada en opiniones de usuarios reales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const allNames = [
+      "Luis M.", "María C.", "Pedro Q.", "Ana S.", "Jorge L.",
+      "Valeria R.", "David A.", "Gabriela V.", "Carlos E.", "Patricia T."
+    ];
+    let availableNames = [...allNames];
+    const feedCities = [
+      "Quito","Guayaquil","Cuenca","Santo Domingo","Machala",
+      "Manta","Portoviejo","Loja","Ambato","Esmeraldas"
+    ];
+    const liveList = document.getElementById('liveList');
+    let feedItems = [];
+    function randomTime() {
+      const m = Math.floor(Math.random()*20);
+      return m<1 ? "hace segundos" : `hace ${m} min`;
+    }
+    function getUniqueName() {
+      if (!availableNames.length) availableNames = [...allNames];
+      return availableNames.splice(Math.floor(Math.random()*availableNames.length),1)[0];
+    }
+    function randomCity() {
+      return feedCities[Math.floor(Math.random()*feedCities.length)];
+    }
+    function randomAmount() {
+      const amount = Math.floor(Math.random()*1001) + 4000;
+      return amount.toLocaleString();
+    }
+    function updateFeed() {
+      const name = getUniqueName();
+      const city = randomCity();
+      const time = randomTime();
+      const amount = randomAmount();
+      const text = `${time} — ${name} (${city}) $${amount} dólares`;
+      feedItems.unshift(text);
+      if (feedItems.length > 4) feedItems.pop();
+      liveList.innerHTML = feedItems.map(t => `<li class="live-feed__item">${t}</li>`).join('');
+    }
+    for(let i=0; i<4; i++) updateFeed();
+    setInterval(updateFeed, 5000);
+  </script>
+</body>
+</html>
